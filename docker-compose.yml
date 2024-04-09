@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  mysql-primary:
+    image: mysql:8.0
+    container_name: mysql-primary
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hello-database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      TZ: Asia/Seoul
+    volumes:
+      - ./db/primary.cnf:/etc/my.cnf
+      - mysql-primary:/var/lib/mysql
+      - ./db/init-primary:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+  mysql-replica:
+    image: mysql:8.0
+    container_name: mysql-replica
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hello-database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      TZ: Asia/Seoul
+    volumes:
+      - ./db/replica.cnf:/etc/my.cnf
+      - mysql-replica:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+volumes:
+  mysql-primary:
+  mysql-replica:
