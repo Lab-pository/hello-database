@@ -14,7 +14,7 @@ SET_PRIMARY_SQL="CHANGE REPLICATION SOURCE TO \
   SOURCE_USER='$SOURCE_USER', \
   SOURCE_PASSWORD='$SOURCE_PASSWORD',\
   SOURCE_LOG_FILE='$CURRENT_LOG',\
-  SOURCE_LOG_POS=$CURRENT_POS;"
+  SOURCE_LOG_POS=$CURRENT_POS;START REPLICA;"
 
 docker exec mysql-replica sh -c "mysql -u root -proot -e \"$SET_PRIMARY_SQL\""
-docker exec mysql-replica sh -c "mysql -u root -proot -e 'SHOW SLAVE STATUS\G'"
+docker exec mysql-replica sh -c "mysql -u root -proot -e 'SHOW REPLICA STATUS\G'"
