@@ -9,7 +9,7 @@ user=mysql
 
 server-id=2
 log_bin=mysql-replica
-binlog_do_db=my_db
+binlog_do_db=hello-database
 
 pid-file=/var/run/mysqld/mysqld.pid
 

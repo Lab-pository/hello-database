@@ -10,7 +10,7 @@ user=mysql
 server-id=1
 log_bin=mysql-primary
 binlog_format=ROW
-binlog_do_db=my_db
+binlog_do_db=hello-database
 
 pid-file=/var/run/mysqld/mysqld.pid
 
