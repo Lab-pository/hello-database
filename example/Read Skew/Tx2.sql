@@ -1,0 +1,22 @@
+-- 3
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SELECT @@SESSION.transaction_isolation;
+
+-- 4
+START TRANSACTION;
+
+-- 6
+UPDATE hello.ACCOUNTS
+SET balance = balance - 100
+WHERE id = 1;
+
+-- 7
+UPDATE hello.ACCOUNTS
+SET balance = balance + 100
+WHERE id = 2;
+
+-- 11
+SELECT * FROM hello.ACCOUNTS;
+
+-- 12
+COMMIT;
