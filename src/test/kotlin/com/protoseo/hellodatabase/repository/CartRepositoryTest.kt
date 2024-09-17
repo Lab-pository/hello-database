@@ -1,27 +1,19 @@
 package com.protoseo.hellodatabase.repository
 
-import java.math.BigDecimal
 import jakarta.persistence.EntityManager
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.test.context.TestConstructor
 import org.springframework.test.context.TestConstructor.AutowireMode.ALL
 import org.springframework.transaction.annotation.Transactional
 import com.protoseo.hellodatabase.hibernate.cart.Cart
-import com.protoseo.hellodatabase.hibernate.generic.Money
-import com.protoseo.hellodatabase.hibernate.member.Member
-import com.protoseo.hellodatabase.hibernate.menu.Menu
-import com.protoseo.hellodatabase.hibernate.menu.MenuId
-import com.protoseo.hellodatabase.hibernate.order.Order
-import com.protoseo.hellodatabase.hibernate.order.OrderId
+import com.protoseo.hellodatabase.hibernate.cart.NewCart
 
 @TestConstructor(autowireMode = ALL)
 @SpringBootTest(properties = ["spring.profiles.active:hibernate"])
 class CartRepositoryTest(
     val cartRepository: CartRepository,
+    val newCartRepository: NewCartRepository,
     val em: EntityManager) {
 
     @Test
@@ -40,11 +32,24 @@ class CartRepositoryTest(
     @Test
     @Transactional
     fun save() {
-        cartRepository.save(Cart())
-        cartRepository.flush()
+        cartRepository.save(Cart()) // Select 쿼리 이후, Insert 쿼리 발생, 즉 2번의 쿼리가e 발생한다
+        cartRepository.flush() // flush 하지 않으면, select 할 때, insert 쿼리 발생
+        println("---------------------------")
 
         val list = cartRepository.findAll()
 
-        println(list[0])
+        println(list[0].id)
+    }
+
+    @Test
+    @Transactional
+    fun saveV2() {
+        newCartRepository.save(NewCart()) // insert 쿼리 한번만 발생
+        newCartRepository.flush()
+        println("---------------------------")
+
+        val list = newCartRepository.findAll()
+
+        println(list[0].id)
     }
 }

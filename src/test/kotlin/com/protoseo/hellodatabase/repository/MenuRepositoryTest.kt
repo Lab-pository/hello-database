@@ -10,12 +10,14 @@ import org.springframework.test.context.TestConstructor
 import org.springframework.test.context.TestConstructor.AutowireMode.ALL
 import org.springframework.transaction.annotation.Transactional
 import com.protoseo.hellodatabase.hibernate.generic.Money
+import com.protoseo.hellodatabase.hibernate.member.Member
 import com.protoseo.hellodatabase.hibernate.menu.Menu
 import com.protoseo.hellodatabase.hibernate.menu.MenuId
 
 @TestConstructor(autowireMode = ALL)
 @SpringBootTest(properties = ["spring.profiles.active:hibernate"])
 class MenuRepositoryTest(
+    private val menuRepository: MenuRepository,
     private val emf: EntityManagerFactory,
     private val em: EntityManager,
 ) {
@@ -23,7 +25,7 @@ class MenuRepositoryTest(
     @Test
     @Transactional
     fun findTestWithTxAnnotation() {
-        em.persist(Menu(MenuId(2L), Money(BigDecimal.valueOf(2000L)), "밥"));
+        em.persist(Menu(MenuId(2L), Money(BigDecimal.valueOf(2000L)), "밥")) // MenuId 에 equals, hashcode 가 없으면 select 쿼리가 한번 더 나감
         em.flush()
         em.clear()
 
@@ -42,7 +44,7 @@ class MenuRepositoryTest(
         val em = emf.createEntityManager()
         val tx = em.transaction
         tx.begin()
-        em.persist(Menu(MenuId(1L), Money(BigDecimal.valueOf(1000L)), "밥"))
+        em.persist(Menu(MenuId(1L), Money(BigDecimal.valueOf(1000L)), "밥")) // MenuId 에 equals, hashcode 가 없으면 select 쿼리가 한번 더 나감
         tx.commit()
 
         val result = em.find(Menu::class.java, MenuId(1L))
@@ -54,4 +56,17 @@ class MenuRepositoryTest(
         assertThat(result.creationCreatedAt).isNotEqualTo(result.currentCreatedAt)
 //        assertThat(result.creationCreatedAt).isNotEqualTo(result.updateUpdatedAt)
     }
+
+    @Test
+    @Transactional
+    fun save() {
+        // CurrentTimeStamp 애노테이션으로 인해 추가적인 Select 쿼리 발생
+        menuRepository.save(Menu(MenuId(1L), Money(BigDecimal.valueOf(1000L)), "밥"))
+        menuRepository.flush()
+        println("----------------------")
+
+        val members = menuRepository.findAll()
+        println(members[0].id)
+    }
+
 }

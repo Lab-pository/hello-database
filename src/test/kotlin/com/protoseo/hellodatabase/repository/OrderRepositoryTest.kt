@@ -34,6 +34,16 @@ class OrderRepositoryTest {
         em.persist(Order(OrderId(1L), "밥"))
         em.flush()
         em.clear()
+    }
 
+    @Test
+    @Transactional
+    fun save() {
+        orderRepository.save(Order(OrderId(1L), "밥"))
+        orderRepository.flush()
+        println("--------------------")
+
+        val orders = orderRepository.findAll()
+        println(orders[0])
     }
 }

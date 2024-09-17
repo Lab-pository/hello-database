@@ -20,6 +20,7 @@ import com.protoseo.hellodatabase.hibernate.order.OrderId
 @TestConstructor(autowireMode = ALL)
 @SpringBootTest(properties = ["spring.profiles.active:hibernate"])
 class MemberRepositoryTest(
+    val memberRepository: MemberRepository,
     val em: EntityManager
 ) {
 
@@ -38,7 +39,7 @@ class MemberRepositoryTest(
 
     @Test
     @Transactional
-    fun insertMultiThread() {
+    fun insertMultiThread() { // TODO
         em.persist(Member(name = "Test"))
         em.flush()
         em.clear()
@@ -47,5 +48,16 @@ class MemberRepositoryTest(
             .resultList;
 
         println(result.get(0).id)
+    }
+
+    @Test
+    @Transactional
+    fun save() {
+        memberRepository.save(Member(name = "Test")) // insert 쿼리 한번만 발생
+        memberRepository.flush()
+        println("----------------------")
+
+        val members = memberRepository.findAll()
+        println(members[0].id)
     }
 }
