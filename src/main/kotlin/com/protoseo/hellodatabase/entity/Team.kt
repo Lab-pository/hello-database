@@ -12,4 +12,8 @@ class Team(
     val id: Long? = null,
     var name: String
 ) {
+
+    override fun toString(): String {
+        return "Team(id=$id, name='$name')"
+    }
 }

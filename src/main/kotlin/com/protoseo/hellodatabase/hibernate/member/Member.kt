@@ -13,6 +13,10 @@ class Member(
     @GenericGenerator(name = "TsidGenerator", type = TsidGenerator::class)
     val id: Long? = null,
 
-    val name: String
+    val name: String,
+
+    val age: Int? = null,
+
+    val gender: Boolean? = null,
 ) {
 }
