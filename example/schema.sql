@@ -4,21 +4,22 @@ CREATE TABLE MEMBER
     name VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE ORDERS
+CREATE TABLE PRODUCT
 (
     id    INT(11)     NOT NULL PRIMARY KEY,
-    buyer VARCHAR(20) NOT NULL
-);
-
-CREATE TABLE INVOICE
-(
-    id       INT(11)     NOT NULL PRIMARY KEY,
-    order_id INT(11)     NOT NULL,
-    buyer    VARCHAR(20) NOT NULL
+    name  VARCHAR(20) NOT NULL,
+    stock INT(11)     NOT NULL
 );
 
 CREATE TABLE ACCOUNTS
 (
     id      INT(11) NOT NULL PRIMARY KEY,
     balance INT(11)
+);
+
+CREATE TABLE DOCTOR
+(
+    id      INT(11)     NOT NULL PRIMARY KEY,
+    name    VARCHAR(20) NOT NULL,
+    on_call BOOL        NOT NULL DEFAULT FALSE
 );

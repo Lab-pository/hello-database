@@ -1,0 +1,14 @@
+-- 3
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SELECT @@SESSION.transaction_isolation;
+
+-- 4
+START TRANSACTION;
+
+-- 6
+INSERT INTO hello.MEMBER(id, name)
+VALUES (6, 'HELLO6'),
+       (7, 'HELLO7');
+
+-- 7
+COMMIT;
